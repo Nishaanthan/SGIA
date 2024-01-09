@@ -1,5 +1,5 @@
 # Installation
-    The following instructions are for installing the SGIA package on a Linux/Windows/MacOS system. The following vector indexing algorithm is implemented in Python 3.6.8. The package is available on PyPI and can be installed using pip. The package is also available on GitHub.
+The following instructions are for installing the SGIA package on a Linux/Windows/MacOS system. The following vector indexing algorithm is implemented in Python 3.6.8. The package is available on PyPI and can be installed using pip. The package is also available on GitHub.
 
 ## Requirements
     numpy
