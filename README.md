@@ -16,7 +16,7 @@ The following instructions are for installing the SGIA package on a Linux/Window
 from sgia import SGIA
 
 # Create a SGIA object
-sgia = SGIA()
+sgia = SGIA(dimensions=2)
 sgia.insert([1.0, 2.0], "Data A")
 sgia.insert([3.0, 4.0], "Data B")
 sgia.insert([5.0, 6.0], "Data C")
