@@ -33,20 +33,28 @@ class SGIA:
 
         def _search_recursive(current_node, depth):
             if "data" in current_node:
-                for _, idx, _ in current_node["data"]:
-                    indices.append(idx)
-                    if len(indices) >= k:
-                        return
+                for idx, (vector, data) in enumerate(current_node["data"]):
+                    distance = np.linalg.norm(np.array(vector) - np.array(query_vector))
+                    indices.append((distance, idx))
+                indices.sort()
+                if len(indices) > k:
+                    indices.pop()
             dimension = depth % self.dimensions
             if query_vector[dimension] < current_node.get("split", 0):
                 if "left" in current_node:
                     _search_recursive(current_node["left"], depth + 1)
+                if "right" in current_node and (not indices or query_vector[dimension] + indices[0][0] > current_node["split"]):
+                    _search_recursive(current_node["right"], depth + 1)
             else:
                 if "right" in current_node:
                     _search_recursive(current_node["right"], depth + 1)
+                if "left" in current_node and (not indices or query_vector[dimension] - indices[0][0] < current_node["split"]):
+                    _search_recursive(current_node["left"], depth + 1)
 
+        # Initialize indices list before calling _search_recursive
+        indices = []
         _search_recursive(self.grid, 0)
-        return indices[:k]
+        return [idx for _, idx in indices[:k]]
 
     def display(self):
         # Create a scatter plot to visualize vectors
