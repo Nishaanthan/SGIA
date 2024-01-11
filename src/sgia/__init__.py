@@ -18,14 +18,16 @@ class SGIA:
                 current_node["data"] = [(vector, data)]
         else:
             dimension = depth % self.dimensions
-            if vector[dimension] < current_node.get("split", 0):
+            split_value = current_node.get("split", 0)  # Get the current split value
+            if vector[dimension] < split_value:
                 if "left" not in current_node:
-                    current_node["left"] = {}
+                    current_node["left"] = {"split": vector[dimension]}  # Set the split value
                 self._insert_recursive(current_node["left"], vector, data, depth + 1)
             else:
                 if "right" not in current_node:
-                    current_node["right"] = {}
+                    current_node["right"] = {"split": vector[dimension]}  # Set the split value
                 self._insert_recursive(current_node["right"], vector, data, depth + 1)
+
 
     def search(self, query_vector, k=1):
         # Find the k nearest neighbors to the query vector
