@@ -42,15 +42,15 @@ class SGIA:
                 if len(indices) > k:
                     indices.pop()
             dimension = depth % self.dimensions
-            if query_vector[dimension] < current_node.get("split", 0):
+            if query_vector[dimension] < current_node.get("split", float('inf')):
                 if "left" in current_node:
                     _search_recursive(current_node["left"], depth + 1)
-                if "right" in current_node and (not indices or query_vector[dimension] + indices[0][0] > current_node["split"]):
+                if "right" in current_node and (not indices or query_vector[dimension] + indices[0][0] > current_node.get("split", float('inf'))):
                     _search_recursive(current_node["right"], depth + 1)
             else:
                 if "right" in current_node:
                     _search_recursive(current_node["right"], depth + 1)
-                if "left" in current_node and (not indices or query_vector[dimension] - indices[0][0] < current_node["split"]):
+                if "left" in current_node and (not indices or query_vector[dimension] - indices[0][0] < current_node.get("split", float('-inf'))):
                     _search_recursive(current_node["left"], depth + 1)
 
         # Initialize indices list before calling _search_recursive
