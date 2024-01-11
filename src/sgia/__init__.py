@@ -29,16 +29,14 @@ class SGIA:
 
     def search(self, query_vector, k=1):
         # Find the k nearest neighbors to the query vector
-        neighbors = []
+        indices = []
 
         def _search_recursive(current_node, depth):
             if "data" in current_node:
-                for vector, data in current_node["data"]:
-                    distance = np.linalg.norm(np.array(vector) - np.array(query_vector))
-                    neighbors.append((distance, data))
-                    neighbors.sort()
-                    if len(neighbors) > k:
-                        neighbors.pop()
+                for _, idx, _ in current_node["data"]:
+                    indices.append(idx)
+                    if len(indices) >= k:
+                        return
             dimension = depth % self.dimensions
             if query_vector[dimension] < current_node.get("split", 0):
                 if "left" in current_node:
@@ -48,7 +46,7 @@ class SGIA:
                     _search_recursive(current_node["right"], depth + 1)
 
         _search_recursive(self.grid, 0)
-        return neighbors[:k]
+        return indices[:k]
 
     def display(self):
         # Create a scatter plot to visualize vectors
