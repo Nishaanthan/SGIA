@@ -33,7 +33,8 @@ class SGIA:
             if "data" in current_node:
                 for idx, (vector, data) in enumerate(current_node["data"]):
                     distance = np.linalg.norm(np.array(vector) - np.array(query_vector))
-                    indices.append((distance, idx))
+                    # indices.append((distance, idx))
+                    indices.append((distance, idx, data))
             dimension = depth % self.dimensions
             split_value = current_node.get("split", 0)
 
@@ -51,8 +52,10 @@ class SGIA:
         indices = []
         _search_recursive(self.grid, 0)
         indices.sort(key=lambda x: x[0])  # Sort by distance
-        result_indices = [idx for _, idx in indices[:k]]
-        return result_indices
+        # result_indices = [idx for _, idx in indices[:k]]
+        # return data of the k nearest neighbors
+        data_list = [data for _, _, data in indices[:k]]
+        return data_list
     
     def get_size(self):
         return self._get_size_recursive(self.grid)
