@@ -53,6 +53,25 @@ class SGIA:
         indices.sort(key=lambda x: x[0])  # Sort by distance
         result_indices = [idx for _, idx in indices[:k]]
         return result_indices
+    
+    def get_size(self):
+        return self._get_size_recursive(self.grid)
+    
+    def _get_size_recursive(self, current_node):
+        size = 0
+        if "data" in current_node:
+            size += len(current_node["data"])
+        if "left" in current_node:
+            size += self._get_size_recursive(current_node["left"])
+        if "right" in current_node:
+            size += self._get_size_recursive(current_node["right"])
+        return size
+    
+    def __json__(self):
+        return self.grid
+    
+    def __str__(self):
+        return str(self.grid)
 
     def display(self):
         vectors = []
